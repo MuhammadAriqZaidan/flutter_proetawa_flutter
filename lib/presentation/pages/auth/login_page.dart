@@ -1,8 +1,8 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_skl_bp/presentation/auth/blocs/login/login_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -15,6 +15,23 @@ class _LoginPageState extends State<LoginPage> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
+  bool isClicked = false;
+  bool _hasNavigated = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkLoginStatus();
+  }
+
+  Future<void> _checkLoginStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    if (token != null) {
+      Navigator.pushReplacementNamed(context, '/dashboard');
+    }
+  }
+
   @override
   void dispose() {
     usernameController.dispose();
@@ -25,22 +42,14 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // Ganti AppColors.background
+      backgroundColor: Colors.white,
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
           const SizedBox(height: 80),
-          Center(
-            child: Image.asset(
-              'assets/logo.png', // Ganti sesuai asset yang kamu punya
-              width: 100,
-              height: 100,
-            ),
-          ),
-          const SizedBox(height: 24),
           const Center(
             child: Text(
-              "ION Canteen",
+              "ION Presensi",
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
@@ -51,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
           const SizedBox(height: 3),
           const Center(
             child: Text(
-              'Healthy Meals for Happy Minds!',
+              'Presensi APP',
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w400,
@@ -80,17 +89,37 @@ class _LoginPageState extends State<LoginPage> {
           ),
           const SizedBox(height: 24),
           BlocListener<LoginBloc, LoginState>(
-            listener: (context, state) {
-              if (state is LoginSuccess) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Center(child: Text("Login Berhasil")),
-                    backgroundColor: Colors.green,
-                  ),
-                );              }
-              if (state is LoginFailure) {
-                final errorMessage = jsonDecode(state.message) ['message'];
+            listener: (context, state) async {
+              if (state is LoginSuccess && !_hasNavigated) {
+                _hasNavigated = true; // ✅ Supaya hanya navigasi sekali
 
+                setState(() {
+                  isClicked = false;
+                });
+
+                final prefs = await SharedPreferences.getInstance();
+                await prefs.setString('token', state.loginModel.accessToken);
+
+                Future.microtask(() {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Center(child: Text("Login Berhasil")),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                });
+
+                Future.microtask(() {
+                  Navigator.pushReplacementNamed(context, '/dashboard');
+                });
+              }
+
+              if (state is LoginFailure) {
+                setState(() {
+                  isClicked = false;
+                });
+
+                final errorMessage = jsonDecode(state.message)['message'];
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Center(child: Text(errorMessage)),
@@ -101,21 +130,34 @@ class _LoginPageState extends State<LoginPage> {
             },
             child: BlocBuilder<LoginBloc, LoginState>(
               builder: (context, state) {
-                if (state is LoginLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                }
                 return ElevatedButton(
-                  onPressed: () {
-                    context.read<LoginBloc>().add(
-                          LoginButtonPressed(
-                              email: usernameController.text,
-                              password: passwordController.text),
-                        );
-                  },
+                  onPressed: (state is LoginLoading || isClicked)
+                      ? null
+                      : () {
+                          setState(() {
+                            isClicked = true;
+                          });
+
+                          context.read<LoginBloc>().add(
+                                LoginButtonPressed(
+                                  email: usernameController.text,
+                                  password: passwordController.text,
+                                ),
+                              );
+                        },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                   ),
-                  child: const Text('Login'),
+                  child: state is LoginLoading
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : const Text('Login'),
                 );
               },
             ),

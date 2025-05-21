@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_skl_bp/data/dataresource/auth_remote_datasource.dart';
+import 'package:flutter_skl_bp/data/dataresource/auth_service.dart';
+import 'package:flutter_skl_bp/presentation/pages/Dashboard.dart';
+import 'package:flutter_skl_bp/presentation/pages/List-Distributor.dart';
+import 'package:flutter_skl_bp/presentation/pages/List-Inventory.dart';
+import 'package:flutter_skl_bp/presentation/pages/List-Reseller.dart';
 import 'package:flutter_skl_bp/presentation/pages/auth/login_page.dart';
 import 'presentation/auth/blocs/login/login_bloc.dart';
 
@@ -14,9 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LoginBloc(
-        AuthRemoteDatasource()
-      ),
+      create: (context) => LoginBloc(AuthRemoteDatasource()),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
@@ -24,7 +26,15 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.grey),
           useMaterial3: true,
         ),
-        home: const LoginPage(),
+        initialRoute: '/',
+        routes: {
+          '/': (context) =>LoginPage(), // kalau pakai splash bisa ubah jadi SplashPage
+          '/distributor': (context) =>DistributorListPage(),
+          '/reseller': (context) =>ResellerListPage(),
+          '/inventory': (context) =>BarangListPage(),
+          '/dashboard': (context) => Dashboardpage(),
+          '/login': (context) => LoginPage(), // ✅ tambahkan ini!
+        },
       ),
     );
   }

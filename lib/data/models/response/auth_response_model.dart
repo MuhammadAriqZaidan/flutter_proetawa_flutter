@@ -1,61 +1,63 @@
 import 'dart:convert';
 
-class AuthResponse {
-    final String accessToken;
-    final String message;
-    final User user;
+class LoginModel {
+  final String accessToken;
+  final String message;
+  final User user;
 
-    AuthResponse({
-        required this.accessToken,
-        required this.message,
-        required this.user,
-    });
+  LoginModel({
+    required this.accessToken,
+    required this.message,
+    required this.user,
+  });
 
-    factory AuthResponse.fromJson(String str) => AuthResponse.fromMap(json.decode(str));
+  factory LoginModel.fromJson(String str) =>
+      LoginModel.fromMap(json.decode(str));
 
-    String toJson() => json.encode(toMap());
+  String toJson() => json.encode(toMap());
 
-    factory AuthResponse.fromMap(Map<String, dynamic> json) => AuthResponse(
+  factory LoginModel.fromMap(Map<String, dynamic> json) => LoginModel(
         accessToken: json["access_token"],
         message: json["message"],
         user: User.fromMap(json["user"]),
-    );
+      );
 
-    Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toMap() => {
         "access_token": accessToken,
         "message": message,
         "user": user.toMap(),
-    };
+      };
 }
 
 class User {
-    final int id;
-    final String name;
-    final String position;
-    final String department;
-    final String faceEmbedded;
-    final dynamic imageUrl;
-    final String email;
-    final DateTime createdAt;
-    final DateTime updatedAt;
+  final int id;
+  final String name;
+  final String? position;
+  final String? department;
+  final String? faceEmbedded;
+  final String? imageUrl;
 
-    User({
-        required this.id,
-        required this.name,
-        required this.position,
-        required this.department,
-        required this.faceEmbedded,
-        required this.imageUrl,
-        required this.email,
-        required this.createdAt,
-        required this.updatedAt,
-    });
+  final String email;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
-    factory User.fromJson(String str) => User.fromMap(json.decode(str));
+  User({
+    required this.id,
+    required this.name,
+    required this.position,
+    required this.department,
+    required this.faceEmbedded,
+    required this.imageUrl,
+    required this.email,
+    required this.createdAt,
+    required this.updatedAt,
+  });
 
-    String toJson() => json.encode(toMap());
+  factory User.fromJson(String str) => User.fromMap(json.decode(str));
 
-    factory User.fromMap(Map<String, dynamic> json) => User(
+  String toJson() => json.encode(toMap());
+
+  factory User.fromMap(Map<String, dynamic> json) => User(
         id: json["id"],
         name: json["name"],
         position: json["position"],
@@ -65,9 +67,9 @@ class User {
         email: json["email"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
-    );
+      );
 
-    Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toMap() => {
         "id": id,
         "name": name,
         "position": position,
@@ -77,5 +79,5 @@ class User {
         "email": email,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
-    };
+      };
 }
