@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_skl_bp/data/dataresource/api_service.dart';
-import '../../data/models/distributor_model.dart';
+import 'package:flutter_skl_bp/data/dataresource/distributor_service.dart';
+import '../../../data/models/distributor_model.dart';
 
 class DistributorListPage extends StatefulWidget {
   const DistributorListPage({super.key});
@@ -15,7 +15,7 @@ class _DistributorListPageState extends State<DistributorListPage> {
   @override
   void initState() {
     super.initState();
-_distributorFuture = ApiService().getDistributors();
+    _distributorFuture = DistributorService().getDistributors();
   }
 
   @override
@@ -33,7 +33,7 @@ _distributorFuture = ApiService().getDistributors();
             return const Center(child: Text('Belum ada distributor.'));
           }
 
-          final distributors = snapshot.data!;
+          final distributors = snapshot.data!.reversed.toList();
           return ListView.builder(
             itemCount: distributors.length,
             itemBuilder: (context, index) {
@@ -50,6 +50,24 @@ _distributorFuture = ApiService().getDistributors();
           );
         },
       ),
+floatingActionButton: FloatingActionButton(
+  onPressed: () async {
+    final result = await Navigator.pushNamed(
+      context,
+      '/add-distributor',
+    );
+
+    if (result == true) {
+      setState(() {
+        // Refresh ulang future atau data distributor
+        _distributorFuture = DistributorService().getDistributors();
+      });
+    }
+  },
+  child: const Icon(Icons.add),
+  tooltip: 'Tambah Distributor',
+),
+
     );
   }
 }

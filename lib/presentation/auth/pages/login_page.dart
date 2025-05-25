@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_skl_bp/presentation/auth/blocs/login/login_bloc.dart';
+import 'package:flutter_skl_bp/presentation/auth/blocs/login_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
@@ -41,6 +41,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    const mainColor = Color(0xFF3C7A3C); // warna hijau konsisten
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: ListView(
@@ -51,9 +53,9 @@ class _LoginPageState extends State<LoginPage> {
             child: Text(
               "ION Presensi",
               style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-                color: Colors.black,
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: mainColor,
               ),
             ),
           ),
@@ -73,7 +75,10 @@ class _LoginPageState extends State<LoginPage> {
             controller: usernameController,
             decoration: const InputDecoration(
               hintText: 'Email',
-              prefixIcon: Icon(Icons.email),
+              prefixIcon: Icon(Icons.email, color: mainColor),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: mainColor),
+              ),
               border: OutlineInputBorder(),
             ),
           ),
@@ -83,7 +88,10 @@ class _LoginPageState extends State<LoginPage> {
             obscureText: true,
             decoration: const InputDecoration(
               hintText: 'Password',
-              prefixIcon: Icon(Icons.lock),
+              prefixIcon: Icon(Icons.lock, color: mainColor),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: mainColor),
+              ),
               border: OutlineInputBorder(),
             ),
           ),
@@ -91,11 +99,8 @@ class _LoginPageState extends State<LoginPage> {
           BlocListener<LoginBloc, LoginState>(
             listener: (context, state) async {
               if (state is LoginSuccess && !_hasNavigated) {
-                _hasNavigated = true; // ✅ Supaya hanya navigasi sekali
-
-                setState(() {
-                  isClicked = false;
-                });
+                _hasNavigated = true;
+                setState(() => isClicked = false);
 
                 final prefs = await SharedPreferences.getInstance();
                 await prefs.setString('token', state.loginModel.accessToken);
@@ -104,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Center(child: Text("Login Berhasil")),
-                      backgroundColor: Colors.green,
+                      backgroundColor: mainColor,
                     ),
                   );
                 });
@@ -115,9 +120,7 @@ class _LoginPageState extends State<LoginPage> {
               }
 
               if (state is LoginFailure) {
-                setState(() {
-                  isClicked = false;
-                });
+                setState(() => isClicked = false);
 
                 final errorMessage = jsonDecode(state.message)['message'];
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -134,9 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: (state is LoginLoading || isClicked)
                       ? null
                       : () {
-                          setState(() {
-                            isClicked = true;
-                          });
+                          setState(() => isClicked = true);
 
                           context.read<LoginBloc>().add(
                                 LoginButtonPressed(
@@ -146,7 +147,11 @@ class _LoginPageState extends State<LoginPage> {
                               );
                         },
                   style: ElevatedButton.styleFrom(
+                    backgroundColor: mainColor,
                     padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                   child: state is LoginLoading
                       ? const SizedBox(
@@ -157,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
                             strokeWidth: 2,
                           ),
                         )
-                      : const Text('Login'),
+                      : const Text('Login', style: TextStyle(color: Colors.white)),
                 );
               },
             ),

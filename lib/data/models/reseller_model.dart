@@ -12,12 +12,11 @@ class Reseller {
     required this.alamat,
     required this.userId,
   });
-
   factory Reseller.fromMap(Map<String, dynamic> json) => Reseller(
-      id: json['id'],
-      nama: json['nama'],
-      noTelp: json['no_telp'],
-      alamat: json['alamat'],
-      userId: json['user_id'],
-    );
+        id: json['id'] ?? 0,
+        nama: json['nama'] ?? '',
+        noTelp: json['no_telp'] ?? '',
+        alamat: json['alamat'] ?? '',
+        userId: json['user_id'] ?? 0,
+      );
 }

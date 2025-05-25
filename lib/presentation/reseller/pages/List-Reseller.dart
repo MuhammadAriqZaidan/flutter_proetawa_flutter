@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_skl_bp/data/dataresource/api_service.dart';
-import '../../data/models/reseller_model.dart';
+import 'package:flutter_skl_bp/data/dataresource/reseller_service.dart';
+import '../../../data/models/reseller_model.dart';
 
 class ResellerListPage extends StatefulWidget {
   const ResellerListPage({super.key});
@@ -15,7 +15,7 @@ class _ResellerListPageState extends State<ResellerListPage> {
   @override
   void initState() {
     super.initState();
-_resellerFuture = ApiService().getResellers();
+    _resellerFuture = ResellerService().getResellers();
   }
 
   @override
@@ -33,7 +33,7 @@ _resellerFuture = ApiService().getResellers();
             return const Center(child: Text('Belum ada reseller.'));
           }
 
-          final resellers = snapshot.data!;
+          final resellers = snapshot.data!.reversed.toList();
           return ListView.builder(
             itemCount: resellers.length,
             itemBuilder: (context, index) {
@@ -45,10 +45,41 @@ _resellerFuture = ApiService().getResellers();
                 title: Text(reseller.nama),
                 subtitle: Text(reseller.noTelp),
                 trailing: Text(reseller.alamat),
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    '/reseller-detail',
+                    arguments: reseller,
+                  ).then((result) {
+                    if (result != null) {
+                      setState(() {
+                        _resellerFuture = ResellerService().getResellers();
+                      });
+                    }
+                  });
+                  ;
+                },
               );
             },
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final result = await Navigator.pushNamed(
+            context,
+            '/add-reseller',
+          );
+
+          if (result == true) {
+            setState(() {
+              // Refresh data reseller
+              _resellerFuture = ResellerService().getResellers();
+            });
+          }
+        },
+        child: const Icon(Icons.add),
+        tooltip: 'Tambah Reseller',
       ),
     );
   }

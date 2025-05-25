@@ -9,7 +9,7 @@ class AuthRemoteDatasource {
   Future<Either<String, LoginModel>> login(
       String email, String password) async {
     final response = await http.post(
-      Uri.parse('http://192.168.1.66:8000/api/login'),
+      Uri.parse('http://127.0.0.1:8000/api/login'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Accept': 'application/json'
