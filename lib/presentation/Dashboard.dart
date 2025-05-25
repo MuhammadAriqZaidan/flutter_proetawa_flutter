@@ -2,7 +2,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_skl_bp/presentation/Management-Page.dart';
-import 'distributor/pages/List-Distributor.dart';
 import 'ProfilePage.dart';
 
 class Dashboardpage extends StatefulWidget {

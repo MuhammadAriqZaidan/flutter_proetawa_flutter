@@ -11,10 +11,7 @@ class ManagementPage extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          ElevatedButton(
-            onPressed: () => Navigator.pushNamed(context, '/distributor'),
-            child: const Text("Kelola Distributor"),
-          ),
+
           const SizedBox(height: 10),
           ElevatedButton(
             onPressed: () => Navigator.pushNamed(context, '/reseller'),

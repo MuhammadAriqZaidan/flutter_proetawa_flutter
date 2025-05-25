@@ -3,12 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_skl_bp/data/models/barang_model.dart';
 import 'package:flutter_skl_bp/data/models/reseller_model.dart';
 import 'package:flutter_skl_bp/presentation/auth/blocs/login_bloc.dart';
-import 'package:flutter_skl_bp/presentation/distributor/blocs/add_distributor_bloc.dart';
 import 'package:flutter_skl_bp/presentation/inventory/blocs/add_inventory_bloc.dart';
-import 'package:flutter_skl_bp/data/dataresource/distributor_service.dart';
 import 'package:flutter_skl_bp/data/dataresource/inventory_service.dart';
 import 'package:flutter_skl_bp/presentation/inventory/pages/Add-Inventory.dart';
-import 'package:flutter_skl_bp/presentation/distributor/pages/Add-Distributor.dart';
 import 'package:flutter_skl_bp/presentation/inventory/pages/Detail-Inventory.dart';
 import 'package:flutter_skl_bp/presentation/inventory/pages/Edit-Inventory.dart';
 import 'package:flutter_skl_bp/presentation/reseller/pages/Reseller-Detail.dart';
@@ -16,7 +13,6 @@ import 'package:flutter_skl_bp/presentation/reseller/pages/edit_reseller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_skl_bp/data/dataresource/auth_service.dart';
 import 'package:flutter_skl_bp/presentation/Dashboard.dart';
-import 'package:flutter_skl_bp/presentation/distributor/pages/List-Distributor.dart';
 import 'package:flutter_skl_bp/presentation/inventory/pages/List-Inventory.dart';
 import 'package:flutter_skl_bp/presentation/reseller/pages/List-Reseller.dart';
 import 'package:flutter_skl_bp/presentation/auth/pages/login_page.dart';
@@ -43,7 +39,6 @@ void main() async {
 /// The routes are as follows:
 ///
 /// * '/' : The login page.
-/// * '/distributor' : The distributor list page.
 /// * '/reseller' : The reseller list page.
 /// * '/inventory' : The inventory list page.
 /// * '/dashboard' : The dashboard page.
@@ -67,7 +62,6 @@ void main() async {
         initialRoute: '/',
         routes: {
           '/': (context) => LoginPage(),
-          '/distributor': (context) => DistributorListPage(),
           '/reseller': (context) => ResellerListPage(),
           '/inventory': (context) => BarangListPage(),
           '/dashboard': (context) => Dashboardpage(),
@@ -92,25 +86,6 @@ void main() async {
                 },
               ),
 
-          // ✅ Tambahan: Add Distributor
-          '/add-distributor': (context) => FutureBuilder(
-                future: SharedPreferences.getInstance(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const Scaffold(
-                      body: Center(child: CircularProgressIndicator()),
-                    );
-                  }
-                  final token = snapshot.data!.getString('token') ?? '';
-                  return BlocProvider(
-                    create: (_) => AddDistributorBloc(
-                      service: DistributorService(),
-                      token: token,
-                    ),
-                    child: const AddDistributorPage(),
-                  );
-                },
-              ),
 
           '/add-reseller': (context) => FutureBuilder(
                 future: SharedPreferences.getInstance(),
