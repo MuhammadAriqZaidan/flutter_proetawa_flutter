@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_skl_bp/presentation/inventory/blocs/edit_inventory_bloc.dart';
@@ -11,7 +13,7 @@ class EditInventoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final nameController = TextEditingController(text: barang.name);
-final priceController = TextEditingController(text: barang.price.toString());
+    final priceController = TextEditingController(text: barang.price.toString());
     final qtyController = TextEditingController(text: barang.quantity.toString());
 
     return Scaffold(
@@ -22,18 +24,17 @@ final priceController = TextEditingController(text: barang.price.toString());
           create: (_) => EditInventoryBloc(),
           child: BlocConsumer<EditInventoryBloc, EditInventoryState>(
             listener: (context, state) {
-  if (state is EditInventorySuccess) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Berhasil update barang')),
-    );
-    Navigator.pop(context, true); // <-- ini posisi yang tepat
-  } else if (state is EditInventoryFailure) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(state.message)),
-    );
-  }
+             if (state is EditInventorySuccess) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Berhasil update barang')),
+              );
+              Navigator.pop(context, true); // <-- ini posisi yang tepat
+             } else if (state is EditInventoryFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+               SnackBar(content: Text(state.message)),
+              );
+             }
 },
-
             builder: (context, state) {
               return Column(
                 children: [
@@ -54,22 +55,23 @@ final priceController = TextEditingController(text: barang.price.toString());
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: state is EditInventoryLoading
-                        ? null
-                        : () {
-                            final name = nameController.text;
-                            final price = priceController.text;
-                            final qty = int.tryParse(qtyController.text) ?? 0;
-
-                            context.read<EditInventoryBloc>().add(UpdateInventoryEvent(
+                      ? null
+                      : () {
+                        final name = nameController.text;
+                        final price = priceController.text;
+                        final qty = int.tryParse(qtyController.text) ?? 0;
+                        context.read<EditInventoryBloc>().add(
+                          UpdateInventoryEvent(
                               id: barang.id,
                               name: name,
                               price: price,
                               quantity: qty,
-                            ));
-                          },
+                          ),
+                        );
+                      },
                     child: state is EditInventoryLoading
-                        ? const CircularProgressIndicator()
-                        : const Text('Simpan Perubahan'),
+                      ? const CircularProgressIndicator()
+                      : const Text('Simpan Perubahan'),
                   )
                 ],
               );

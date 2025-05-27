@@ -1,4 +1,6 @@
 // lib/presentation/inventory/pages/add_inventory_page.dart
+// ignore_for_file: unused_import, file_names, unused_local_variable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_skl_bp/presentation/inventory/blocs/add_inventory_bloc.dart';
@@ -33,8 +35,7 @@ class _AddInventoryPageState extends State<AddInventoryPage> {
         child: BlocListener<AddInventoryBloc, AddInventoryState>(
           listener: (context, state) {
             if (state is AddInventorySuccess) {
-              Navigator.pop(context,
-                  true); // Kirim sinyal ke page sebelumnya untuk refresh
+              Navigator.pop(context, true); // Kirim sinyal ke page sebelumnya untuk refresh
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text("Barang berhasil ditambahkan"),
@@ -70,6 +71,7 @@ class _AddInventoryPageState extends State<AddInventoryPage> {
                   border: OutlineInputBorder(),
                 ),
               ),
+              const SizedBox(height: 16),
               TextField(
                 controller: hargaController,
                 keyboardType: TextInputType.number,
@@ -83,20 +85,19 @@ class _AddInventoryPageState extends State<AddInventoryPage> {
                         ? null
                         : () {
                             final nama = namaController.text;
-                            final jumlah =
-                                int.tryParse(jumlahController.text) ?? 0;
+                            final jumlah = int.tryParse(jumlahController.text) ?? 0;
 
                             context.read<AddInventoryBloc>().add(
-                                  SubmitInventory(
-                                    namaBarang: namaController.text,
-                                    jumlah: int.parse(jumlahController.text),
-                                    harga: int.parse(hargaController.text),
-                                  ),
-                                );
-                          },
-                    child: state is AddInventoryLoading
-                        ? const CircularProgressIndicator(color: Colors.white)
-                        : const Text("Tambah"),
+                              SubmitInventory(
+                                namaBarang: namaController.text,
+                                jumlah: int.parse(jumlahController.text),
+                                harga: int.parse(hargaController.text),
+                              ),
+                            );
+                        },
+                        child: state is AddInventoryLoading
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : const Text("Tambah"),
                   );
                 },
               ),

@@ -1,3 +1,5 @@
+// ignore_for_file: slash_for_doc_comments, unused_import
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_skl_bp/data/models/barang_model.dart';
@@ -24,8 +26,8 @@ import 'package:intl/intl.dart';
 
 void main() async {
     WidgetsFlutterBinding.ensureInitialized();
-  await initializeDateFormatting('id', null); // ID = Bahasa Indonesia
-  runApp(const MyApp());
+    await initializeDateFormatting('id', null); // ID = Bahasa Indonesia
+    runApp(const MyApp());
 }
 
 /*************  ✨ Windsurf Command ⭐  *************/
@@ -44,8 +46,8 @@ void main() async {
 /// * '/dashboard' : The dashboard page.
 /// * '/login' : The login page.
 ///
-/*******  5a5946ba-0e4b-42ac-a8c1-be05b7ff47a1  *******/ class MyApp
-    extends StatelessWidget {
+/*******  5a5946ba-0e4b-42ac-a8c1-be05b7ff47a1  *******/ 
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
@@ -118,9 +120,13 @@ void main() async {
             return FutureBuilder(
               future: SharedPreferences.getInstance(),
               builder: (context, snapshot) {
-                if (!snapshot.hasData)
+                if (!snapshot.hasData) {
                   return const Scaffold(
-                      body: Center(child: CircularProgressIndicator()));
+                      body: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                      );
+                }
                 final token = snapshot.data!.getString('token') ?? '';
                 return BlocProvider(
                   create: (_) =>
@@ -130,12 +136,13 @@ void main() async {
               },
             );
           },
-          '/edit-inventory': (context) {
-  final barang = ModalRoute.of(context)!.settings.arguments as BarangModel;
-  return EditInventoryPage(barang: barang);
-},
 
-'/barang-detail': (context) {
+          '/edit-inventory': (context) {
+            final barang = ModalRoute.of(context)!.settings.arguments as BarangModel;
+            return EditInventoryPage(barang: barang);
+          },
+
+    '/barang-detail': (context) {
       final barang = ModalRoute.of(context)!.settings.arguments as BarangModel;
       return BarangDetailPage(barang: barang);
     },

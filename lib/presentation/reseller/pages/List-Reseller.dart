@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_skl_bp/data/dataresource/reseller_service.dart';
 import '../../../data/models/reseller_model.dart';
@@ -56,8 +58,9 @@ class _ResellerListPageState extends State<ResellerListPage> {
                         _resellerFuture = ResellerService().getResellers();
                       });
                     }
-                  });
-                  ;
+                  }
+                  );
+                  
                 },
               );
             },
@@ -78,8 +81,8 @@ class _ResellerListPageState extends State<ResellerListPage> {
             });
           }
         },
-        child: const Icon(Icons.add),
         tooltip: 'Tambah Reseller',
+        child: const Icon(Icons.add),
       ),
     );
   }

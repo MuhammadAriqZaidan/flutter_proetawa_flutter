@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import, file_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_skl_bp/data/dataresource/inventory_service.dart';
 import 'package:flutter_skl_bp/presentation/inventory/pages/Detail-Inventory.dart';
@@ -61,21 +63,24 @@ class _BarangListPageState extends State<BarangListPage> {
                       // Kalau dari halaman detail (atau edit) ada perubahan, refresh list
                       _refreshBarang();
                     }
-                  });
+                  },
+                );
             },
           );
         },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/add-inventory').then((value) {
-            if (value == true) {
+          Navigator.pushNamed(context, '/add-inventory').then(
+            (value) {
+             if (value == true) {
               _refreshBarang(); // refresh jika berhasil tambah
-            }
-          });
+             }
+            },
+          );
         },
-        child: const Icon(Icons.add),
         tooltip: 'Tambah Inventory',
+        child: const Icon(Icons.add),
       ),
     );
   }

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -51,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
           const SizedBox(height: 80),
           const Center(
             child: Text(
-              "ION Presensi",
+              "Pro Data",
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
@@ -62,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
           const SizedBox(height: 3),
           const Center(
             child: Text(
-              'Presensi APP',
+              'Login',
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w400,

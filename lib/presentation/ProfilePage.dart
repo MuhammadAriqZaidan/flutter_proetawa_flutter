@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_skl_bp/data/dataresource/auth_service.dart';
 
@@ -12,49 +14,48 @@ class ProfilePage extends StatelessWidget {
         child: Column(
           children: [
             Align(
-              alignment: Alignment.topCenter,
-              child: Container(
-                padding: const EdgeInsets.all(50),
-                decoration: const BoxDecoration(
-                  color: Color(0xFF3C7A3C),
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(35),
-                    bottomRight: Radius.circular(35),
+             alignment: Alignment.topCenter,
+             child: Container(
+              padding: const EdgeInsets.all(50),
+              decoration: const BoxDecoration(
+                color: Color(0xFF3C7A3C),
+                borderRadius: BorderRadius.only(
+                 bottomLeft: Radius.circular(35),
+                 bottomRight: Radius.circular(35),
+                ),
+                ),
+              child: const Column(
+               mainAxisSize: MainAxisSize.min,
+               children: [
+                SizedBox(
+                 width: 150,
+                 height: 150,
+                 child: CircleAvatar(
+                  backgroundImage: AssetImage("images/users/3.jpg"),
+                ),
+                ),
+                SizedBox(height: 10),
+                Text(
+                 'Logan Jack',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                child: const Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(
-                      width: 150,
-                      height: 150,
-                      child: CircleAvatar(
-                        backgroundImage: AssetImage("images/users/3.jpg"),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      'Logan Jack',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      "JakLogan2099@Hotmail.com",
-                      style: TextStyle(
-                        color: Colors.white60,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w200,
-                      ),
-                    )
-                  ],
-                ),
+                Text(
+                  "JakLogan2099@Hotmail.com",
+                  style: TextStyle(
+                    color: Colors.white60,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w200,
+                  ),
+                )
+              ],
+             ),
               ),
             ),
             const SizedBox(height: 20),
-
             // List profil
             ProfileList(shrinkWrap: true),  // Kita tambahkan shrinkWrap di ProfileList nanti
           ],

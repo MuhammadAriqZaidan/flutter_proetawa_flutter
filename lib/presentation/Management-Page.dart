@@ -1,4 +1,6 @@
 // management_page.dart
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 
 class ManagementPage extends StatelessWidget {
@@ -11,7 +13,6 @@ class ManagementPage extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-
           const SizedBox(height: 10),
           ElevatedButton(
             onPressed: () => Navigator.pushNamed(context, '/reseller'),

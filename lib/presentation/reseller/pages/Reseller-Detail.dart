@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_skl_bp/data/dataresource/reseller_service.dart';
@@ -54,8 +56,7 @@ class ResellerDetailPage extends StatelessWidget {
                       context: context,
                       builder: (ctx) => AlertDialog(
                         title: const Text('Konfirmasi'),
-                        content:
-                            const Text('Yakin ingin menghapus reseller ini?'),
+                        content: const Text('Yakin ingin menghapus reseller ini?'),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.pop(ctx, false),
@@ -76,17 +77,15 @@ class ResellerDetailPage extends StatelessWidget {
                       if (token.isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                              content: Text(
-                                  'Token tidak ditemukan. Silakan login ulang.')),
+                              content: Text('Token tidak ditemukan. Silakan login ulang.'),
+                          ),
                         );
                         return;
                       }
 
-                      await ResellerService()
-                          .deleteReseller(reseller.id, token);
+                      await ResellerService().deleteReseller(reseller.id, token);
                       if (context.mounted) {
-                        Navigator.pop(
-                            context, true); // kembali dan refresh list
+                        Navigator.pop(context, true); // kembali dan refresh list
                       }
                     }
                   },

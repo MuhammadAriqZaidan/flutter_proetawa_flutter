@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_skl_bp/data/dataresource/inventory_service.dart';
 import 'package:flutter_skl_bp/data/dataresource/reseller_service.dart';
@@ -50,49 +52,48 @@ class _BarangDetailPageState extends State<BarangDetailPage> {
               });
             },
           ),
-         IconButton(
-  icon: Icon(Icons.delete),
-  tooltip: 'Hapus Barang',
-  onPressed: () async {
-    final confirm = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Konfirmasi Hapus'),
-        content: Text('Yakin ingin menghapus barang ini?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text('Batal'),
+          IconButton(
+            icon: Icon(Icons.delete),
+            tooltip: 'Hapus Barang',
+            onPressed: () async {
+             final confirm = await showDialog<bool>(
+              context: context,
+              builder: (context) => AlertDialog(
+              title: Text('Konfirmasi Hapus'),
+              content: Text('Yakin ingin menghapus barang ini?'),
+              actions: [
+               TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: Text('Batal'),
+              ),
+               TextButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: Text('Hapus'),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: Text('Hapus'),
-          ),
-        ],
-      ),
-    );
-
-    if (confirm == true) {
-      try {
-        final prefs = await SharedPreferences.getInstance();
-        final token = prefs.getString('token') ?? '';
-
-        await InventoryService().deleteBarang(barang.id, token);
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Barang berhasil dihapus')),
         );
 
-        Navigator.pop(context, true); // kembali dan trigger refresh
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
+      if (confirm == true) {
+        try {
+          final prefs = await SharedPreferences.getInstance();
+          final token = prefs.getString('token') ?? '';
+
+          await InventoryService().deleteBarang(barang.id, token);
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Barang berhasil dihapus')),
+          );
+
+          Navigator.pop(context, true); // kembali dan trigger refresh
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Gagal menghapus barang: $e')),
         );
       }
-    }
-  },
-),
-
+      }
+    },
+  ),
         ],
       ),
       body: Padding(
@@ -100,20 +101,43 @@ class _BarangDetailPageState extends State<BarangDetailPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Nama: ${barang.name}',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Text(
+              'Nama: ${barang.name}',
+               style: TextStyle(
+                fontSize: 20, 
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             const SizedBox(height: 8),
-            Text('Harga: Rp ${barang.price}', style: TextStyle(fontSize: 16)),
-            Text('Stok: ${barang.quantity}', style: TextStyle(fontSize: 16)),
-            Text('User ID: ${barang.userId}',
-                style: TextStyle(fontSize: 14, color: Colors.grey)),
             Text(
-                'Dibuat: ${DateFormat('dd MMMM yyyy', 'id_ID').format(barang.createdAt.toLocal())}'),
+              'Harga: Rp ${barang.price}', 
+              style: TextStyle(
+                fontSize: 16,
+              ),
+            ),
             Text(
-                'Diperbarui: ${DateFormat('dd MMMM yyyy', 'id_ID').format(barang.updatedAt.toLocal())}'),
+              'Stok: ${barang.quantity}', 
+              style: TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            Text(
+              'User ID: ${barang.userId}',
+              style: TextStyle(
+                fontSize: 14, 
+                color: Colors.grey,
+              ),
+            ),
+            Text('Dibuat: ${DateFormat('dd MMMM yyyy', 'id_ID').format(barang.createdAt.toLocal())}'),
+            Text('Diperbarui: ${DateFormat('dd MMMM yyyy', 'id_ID').format(barang.updatedAt.toLocal())}'),
             const SizedBox(height: 20),
-            Text('Riwayat Perubahan:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Text(
+              'Riwayat Perubahan:',
+              style: TextStyle(
+                fontSize: 18, 
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             Expanded(
               child: barang.histories.isEmpty
                   ? const Center(child: Text('Belum ada riwayat perubahan.'))
@@ -124,10 +148,8 @@ class _BarangDetailPageState extends State<BarangDetailPage> {
                         return Card(
                           margin: const EdgeInsets.symmetric(vertical: 4),
                           child: ListTile(
-                            title: Text(
-                                'Dari: ${history.oldValue} → ${history.newValue}'),
-                            subtitle: Text(
-                                'Oleh User ID: ${history.userId}\nPada: ${DateFormat('dd MMMM yyyy', 'id_ID').format(history.createdAt.toLocal())}'),
+                            title: Text('Dari: ${history.oldValue} → ${history.newValue}'),
+                            subtitle: Text('Oleh User ID: ${history.userId}\nPada: ${DateFormat('dd MMMM yyyy', 'id_ID').format(history.createdAt.toLocal())}'),
                             trailing: IconButton(
                               icon: Icon(Icons.delete, color: Colors.red),
                               onPressed: () async {
@@ -135,16 +157,13 @@ class _BarangDetailPageState extends State<BarangDetailPage> {
                                   context: context,
                                   builder: (context) => AlertDialog(
                                     title: Text('Hapus Riwayat?'),
-                                    content:
-                                        Text('Yakin ingin menghapus riwayat ini?'),
+                                    content: Text('Yakin ingin menghapus riwayat ini?'),
                                     actions: [
                                       TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, false),
+                                          onPressed: () => Navigator.pop(context, false),
                                           child: Text('Batal')),
                                       TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, true),
+                                          onPressed: () => Navigator.pop(context, true),
                                           child: Text('Hapus')),
                                     ],
                                   ),
@@ -152,25 +171,20 @@ class _BarangDetailPageState extends State<BarangDetailPage> {
 
                                 if (confirm == true) {
                                   try {
-                                    final prefs =
-                                        await SharedPreferences.getInstance();
+                                    final prefs = await SharedPreferences.getInstance();
                                     final token = prefs.getString('token') ?? '';
 
-                                    await ResellerService()
-                                        .deleteHistory(history.id, token);
+                                    await ResellerService().deleteHistory(history.id, token);
 
                                     // Langsung hapus dari tampilan
                                     removeHistoryById(history.id);
 
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          content: Text(
-                                              'Riwayat berhasil dihapus')),
+                                      SnackBar(content: Text('Riwayat berhasil dihapus')),
                                     );
                                   } catch (e) {
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          content: Text('Gagal hapus: $e')),
+                                      SnackBar(content: Text('Gagal hapus: $e')),
                                     );
                                   }
                                 }

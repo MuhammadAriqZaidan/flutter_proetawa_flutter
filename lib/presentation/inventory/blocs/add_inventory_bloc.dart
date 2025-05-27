@@ -1,8 +1,9 @@
 // lib/presentation/inventory/blocs/add_inventory_bloc.dart
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_skl_bp/data/dataresource/inventory_service.dart';
 import 'package:meta/meta.dart';
-
 part 'add_inventory_event.dart';
 part 'add_inventory_state.dart';
 

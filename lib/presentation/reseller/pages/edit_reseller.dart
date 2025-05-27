@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_skl_bp/data/models/reseller_model.dart';
@@ -38,13 +40,13 @@ class _EditResellerPageState extends State<EditResellerPage> {
 
   void _submit() {
     context.read<EditResellerBloc>().add(
-          EditResellerRequested(
-            id: widget.reseller.id,
-            nama: _namaController.text,
-            noTelp: _noTelpController.text,
-            alamat: _alamatController.text,
-          ),
-        );
+      EditResellerRequested(
+        id: widget.reseller.id,
+        nama: _namaController.text,
+        noTelp: _noTelpController.text,
+        alamat: _alamatController.text,
+      ),
+    );
   }
 
   @override

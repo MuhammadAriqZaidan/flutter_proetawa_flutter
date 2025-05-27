@@ -1,4 +1,5 @@
-// ignore: file_names, depend_on_referenced_packages
+// ignore_for_file: file_names
+
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_skl_bp/presentation/Management-Page.dart';
@@ -93,7 +94,11 @@ class DashboardpageContent extends StatelessWidget {
                 ),
                 child: const Column(
                   children: [
-                    Icon(Icons.bar_chart, size: 50, color: Colors.white),
+                    Icon(
+                      Icons.bar_chart, 
+                      size: 50, 
+                      color: Colors.white,
+                    ),
                     SizedBox(height: 10),
                     Text(
                       "Statistik Penjualan",

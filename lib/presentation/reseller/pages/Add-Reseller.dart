@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_skl_bp/presentation/reseller/blocs/add_reseller_bloc.dart';
@@ -44,16 +46,19 @@ class _AddResellerPageState extends State<AddResellerPage> {
                     decoration: const InputDecoration(labelText: 'Nama'),
                     validator: (value) => value!.isEmpty ? 'Wajib diisi' : null,
                   ),
+                  
                   TextFormField(
                     controller: _noTelpController,
                     decoration: const InputDecoration(labelText: 'No. Telepon'),
                     validator: (value) => value!.isEmpty ? 'Wajib diisi' : null,
                   ),
+
                   TextFormField(
                     controller: _alamatController,
                     decoration: const InputDecoration(labelText: 'Alamat'),
                     validator: (value) => value!.isEmpty ? 'Wajib diisi' : null,
                   ),
+
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: state is AddResellerLoading
