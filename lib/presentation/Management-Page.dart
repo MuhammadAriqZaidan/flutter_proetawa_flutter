@@ -14,14 +14,44 @@ class ManagementPage extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         children: [
           const SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: () => Navigator.pushNamed(context, '/reseller'),
-            child: const Text("Kelola Reseller"),
+          InkWell(
+            onTap: (){
+              Navigator.pushNamed(context, '/reseller');
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.group, 
+                  size: 100, 
+                  color: Colors.green,
+                ),
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
+                  child: Text('Kelola Reseller'),
+                )
+              ],
+            ),
           ),
           const SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: () => Navigator.pushNamed(context, '/inventory'),
-            child: const Text("Kelola Inventori"),
+          InkWell(
+            onTap: () {
+              Navigator.pushNamed(context, '/inventory');
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.inventory, 
+                  size: 100, 
+                  color: Colors.green,
+                ),
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
+                  child: Text('Kelola Invetori'),
+                )
+              ],
+            ),
           ),
         ],
       ),

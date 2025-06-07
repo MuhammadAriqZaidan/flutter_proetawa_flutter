@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../data/models/barang_model.dart';
 
 class InventoryService {
-  final String baseUrl = 'http://127.0.0.1:8000/api';
+  final String baseUrl = 'http://192.168.8.167:8000/api';
 
   Future<List<BarangModel>> getInventory() async {
     try {

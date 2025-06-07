@@ -1,66 +1,98 @@
-// ignore_for_file: file_names, use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:flutter_skl_bp/data/dataresource/auth_service.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  String userName = '';
+  String userEmail = '';
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserProfile();
+  }
+
+  Future<void> _loadUserProfile() async {
+    try {
+      final userData = await AuthRemoteDatasource().getUserProfile();
+      setState(() {
+        userName = userData['name'] ?? 'No Name';
+        userEmail = userData['email'] ?? 'No Email';
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        userName = 'Error';
+        userEmail = 'Error';
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(  // BUNGKUS SEMUA DENGAN SCROLL VIEW
-        child: Column(
-          children: [
-            Align(
-             alignment: Alignment.topCenter,
-             child: Container(
-              padding: const EdgeInsets.all(50),
-              decoration: const BoxDecoration(
-                color: Color(0xFF3C7A3C),
-                borderRadius: BorderRadius.only(
-                 bottomLeft: Radius.circular(35),
-                 bottomRight: Radius.circular(35),
-                ),
-                ),
-              child: const Column(
-               mainAxisSize: MainAxisSize.min,
-               children: [
-                SizedBox(
-                 width: 150,
-                 height: 150,
-                 child: CircleAvatar(
-                  backgroundImage: AssetImage("images/users/3.jpg"),
-                ),
-                ),
-                SizedBox(height: 10),
-                Text(
-                 'Logan Jack',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Container(
+                      padding: const EdgeInsets.all(50),
+                      decoration: const BoxDecoration(
+                        color: Color(0xFF3C7A3C),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(35),
+                          bottomRight: Radius.circular(35),
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(
+                            width: 150,
+                            height: 150,
+                            child: CircleAvatar(
+                              backgroundImage: AssetImage("images/users/3.jpg"),
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            userName,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            userEmail,
+                            style: TextStyle(
+                              color: Colors.white60,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w200,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-                Text(
-                  "JakLogan2099@Hotmail.com",
-                  style: TextStyle(
-                    color: Colors.white60,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w200,
-                  ),
-                )
-              ],
-             ),
+                  const SizedBox(height: 20),
+                  // List profil
+                  ProfileList(shrinkWrap: true), // Kita tambahkan shrinkWrap di ProfileList nanti
+                ],
               ),
             ),
-            const SizedBox(height: 20),
-            // List profil
-            ProfileList(shrinkWrap: true),  // Kita tambahkan shrinkWrap di ProfileList nanti
-          ],
-        ),
-      ),
     );
   }
 }
@@ -86,7 +118,7 @@ class ProfileList extends StatelessWidget {
           ),
           child: const ListTile(
             leading: Icon(Icons.person),
-            title: Text("Your Account"),
+            title: Text("Edit Profile"),
           ),
         ),
         Container(
