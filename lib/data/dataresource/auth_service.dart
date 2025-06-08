@@ -74,5 +74,18 @@ class AuthRemoteDatasource {
     return prefs.getString('token');
   }
 
-  Future getUserProfile() async {}
+  Future<Map<String, String>> getUserProfile() async {
+  // Assume you have a API or database that returns user data
+  final response = await http.get(Uri.parse('http://192.168.8.167:8000/api/profile'));
+
+  if (response.statusCode == 200) {
+    final jsonData = jsonDecode(response.body);
+    return {
+      'name': jsonData['name'],
+      'email': jsonData['email'],
+    };
+  } else {
+    throw Exception('Failed to load user profile');
+  }
+}
 }

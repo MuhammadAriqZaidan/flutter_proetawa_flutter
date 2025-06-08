@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, file_names, duplicate_ignore
 
 import 'package:flutter/material.dart';
 import 'package:flutter_skl_bp/data/dataresource/auth_service.dart';
@@ -22,20 +22,12 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> _loadUserProfile() async {
-    try {
-      final userData = await AuthRemoteDatasource().getUserProfile();
+    final userData = await AuthRemoteDatasource().getUserProfile();
       setState(() {
         userName = userData['name'] ?? 'No Name';
         userEmail = userData['email'] ?? 'No Email';
         isLoading = false;
       });
-    } catch (e) {
-      setState(() {
-        userName = 'Error';
-        userEmail = 'Error';
-        isLoading = false;
-      });
-    }
   }
 
   @override
@@ -98,6 +90,8 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
+
+
 
 class ProfileList extends StatelessWidget {
   final bool shrinkWrap;
